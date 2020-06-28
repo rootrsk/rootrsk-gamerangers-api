@@ -9,7 +9,6 @@ const User = require('../models/usersmodel')
 const Matches = require('../models/matchesModel')
 const Participant = require('../models/participantModel')
 const { findById } = require('../models/usersmodel')
-const e = require('express')
 
 
 router.get('/users',async(req,res)=>{
