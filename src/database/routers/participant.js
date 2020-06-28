@@ -41,7 +41,7 @@ router.get('/team/:id',async(req,res)=>{
 router.post('/team/reg',async(req,res)=>{
     try{
         console.log(req.body)
-        const  team =new Participant(req.body)
+        const  team = new Participant(req.body)
         const match = await Matches.findById(req.body.match_id)
         console.log(team._id)
         match.teams = match.teams.concat({team_id : team._id})
