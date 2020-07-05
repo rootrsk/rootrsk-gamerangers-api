@@ -5,8 +5,10 @@ try{
         useCreateIndex:true,
         useUnifiedTopology: true,
         useFindAndModify: false
+    },()=>{
+        console.log("Connected to data")
     })
-    // console.log("Connected to data")
+    
  } catch(e){
      console.log(e.message)
  }

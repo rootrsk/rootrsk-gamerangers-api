@@ -14,9 +14,10 @@ const adminAuth =async function(req,res,next){
         req.authentication ='loggedin'
         next()
     }catch(e){
-        console.log(e.message)
         req.authentication = 'loggedout'
-        res.send({authentication:req.authentication,message:'unsuccessful',error:e.message})
+        res.clearCookie('token')
+        console.log("user not found")
+        res.send({authentication :req.authentication,message:'unsuccessful'})
     }
 
 }   

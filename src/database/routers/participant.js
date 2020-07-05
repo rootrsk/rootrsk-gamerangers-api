@@ -27,7 +27,10 @@ const Participant = require('../models/participantModel')
 //         res.send({error : e.message})
 //     }
 // })
-
+router.get('/teams',async(req,res)=>{
+    const teams = await Participant.find({})
+    res.send({message:'successful',error:'', teams})
+})
 
 router.get('/team/:id',async(req,res)=>{
     try{
@@ -38,21 +41,21 @@ router.get('/team/:id',async(req,res)=>{
     }
 })
 
-router.post('/team/reg',async(req,res)=>{
-    try{
-        console.log(req.body)
-        const  team = new Participant(req.body)
-        const match = await Matches.findById(req.body.match_id)
-        console.log(team._id)
-        match.teams = match.teams.concat({team_id : team._id})
-        await match.save()
-        await team.save()
-        res.send({message:'successful',error:''})
-    }catch(e){
-        res.send({error : e.message})
+// router.post('/team/reg',async(req,res)=>{
+//     try{
+//         console.log(req.body)
+//         const  team = new Participant(req.body)
+//         const match = await Matches.findById(req.body.match_id)
+//         console.log(team._id)
+//         match.teams = match.teams.concat({team_id : team._id})
+//         await match.save()
+//         await team.save()
+//         res.send({message:'successful',error:''})
+//     }catch(e){
+//         res.send({error : e.message})
 
-    }
-})
+//     }
+// })
 router.patch('/team/:id',async(req,res)=>{
     try{
         const  team =await Participant.findByIdAndUpdate({_id : req.params.id},req.body)

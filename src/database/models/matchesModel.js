@@ -5,10 +5,6 @@ const matchSchema =new mongoose.Schema ({
         type:Date,
         unique:true
     },
-    finish:{
-        type : Boolean,
-        default:false
-    },
     winner:{
         type:String
     },
@@ -41,7 +37,6 @@ const matchSchema =new mongoose.Schema ({
         _id:false,
         team_id:{
             type:String,
-            unique:true
         }
     }],
     per_kill_prize : {
