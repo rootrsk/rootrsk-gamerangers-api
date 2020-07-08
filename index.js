@@ -7,6 +7,23 @@ const cookieParser = require('cookie-parser')
 require('./src/database/mongoose')
 
 
+
+const userRouters = require('./src/database/routers/user')
+const matchRouters= require('./src/database/routers/matches')
+const adminRouters= require('./src/database/routers/admin')
+const participantRouters = require('./src/database/routers/participant')
+
+
+
+
+
+const app = express()
+const port =  process.env.PORT 
+app.use(express.json())
+app.use(cookieParser())
+
+app.use(bodyParser.urlencoded({ extended: true}))
+
 app.use(function (req, res, next) {
 
     // Website you wish to allow to connect
@@ -25,22 +42,6 @@ app.use(function (req, res, next) {
     // Pass to next layer of middleware
     next();
 });
-
-const userRouters = require('./src/database/routers/user')
-const matchRouters= require('./src/database/routers/matches')
-const adminRouters= require('./src/database/routers/admin')
-const participantRouters = require('./src/database/routers/participant')
-
-
-
-
-
-const app = express()
-const port =  process.env.PORT 
-app.use(express.json())
-app.use(cookieParser())
-
-app.use(bodyParser.urlencoded({ extended: true}))
 
 
 app.use(userRouter)
@@ -72,13 +73,8 @@ app.get('/help',(req,res)=>{
     res.send('This is help page')
 })
 
-app.post('/newUser',(req,res)=>{
-    res.json({
-        name : 'ravi',
-        error : "",
-        message : "Success"
-    })
-})
+
+
 
 app.listen(port,()=>{
     console.log(`server Started at port ${port}`)
