@@ -12,14 +12,18 @@ const { findById, findByIdAndUpdate } = require('../models/usersmodel')
 router.get('/users',async(req,res)=>{
     
     const users = await User.find({})
-    res.send(users)
+
+    res.send(users) 
 })
 
 router.post('/user/login',async(req,res)=>{
     try{
         const user = await User.findByCresidential(req.body.email,req.body.password)
         const token = await user.genAuthToken()
+        console.log(req.header)
+        res.header('token',token)
         res.cookie('token',token,{maxAge:604800000})
+        
         res.send({authentication:'loggedin',message:'successful',user:user})
     }catch(e) {
         res.send({error : e.message})   
