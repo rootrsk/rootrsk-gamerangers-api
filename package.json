@@ -7,7 +7,7 @@
     "start": "node index.js",
     "dev": "env-cmd -f .env nodemon index.js"
   },
-  "author": "",
+  "author": "Rootrsk",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.19.0",

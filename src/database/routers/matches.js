@@ -14,6 +14,10 @@ router.get('/matches',async(req,res)=>{
     const matches =await Matches.find({}).sort({_id : -1}).limit(10)
     res.send(matches)
 })
+router.get('/api/matches',async(req,res)=>{
+    const matches =await Matches.find({}).sort({_id : -1}).limit(10)
+    res.send(matches)
+})
 router.get('/admin/matches',adminAuth,async(req,res)=>{
     const matches = await Matches.find({}).sort({_id : -1}).limit(15)
     res.send({message:'successful',error:'',matches})
