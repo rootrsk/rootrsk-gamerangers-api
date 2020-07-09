@@ -3,9 +3,10 @@ const User = require('../database/models/usersmodel')
 
 const auth = async(req,res,next)=>{
     try{
-        const _id = jwt.verify(req.header.token,process.env.JWT_SECRET)._id
+        const _id = jwt.verify(req.cookie.token,process.env.JWT_SECRET)._id
         console.log(_id)
         const user = await User.findById({_id})
+        console.log(user._id)
         if(!user) throw new Error("No user found")
         req.user = user
         req.authentication ='loggedin'

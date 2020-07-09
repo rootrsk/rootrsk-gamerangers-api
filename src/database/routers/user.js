@@ -11,18 +11,21 @@ const Participant = require('../models/participantModel')
 const { findById, findByIdAndUpdate } = require('../models/usersmodel')
 router.get('/users',async(req,res)=>{
     
-    const users = await User.find({})
-
-    res.send(users) 
+    // const users = await User.find({})
+    res.cookie('token','thisisatoken',{maxAge:604800000})
+    res.setHeader('token','this.is a tokne')
+    res.send(req.headers) 
 })
 
 router.post('/user/login',async(req,res)=>{
     try{
+        console.log(req.headers)
         const user = await User.findByCresidential(req.body.email,req.body.password)
         const token = await user.genAuthToken()
-        console.log(req.header)
-        res.header('token',token)
+        // console.log(req.header)
+        // res.header('token',token)
         res.cookie('token',token,{maxAge:604800000})
+        res.setHeader('token',token)
         
         res.send({authentication:'loggedin',message:'successful',user:user})
     }catch(e) {
