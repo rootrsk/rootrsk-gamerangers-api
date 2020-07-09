@@ -3,7 +3,7 @@ const User = require('../database/models/usersmodel')
 
 const auth = async(req,res,next)=>{
     try{
-        const _id = jwt.verify(req.cookie.token,process.env.JWT_SECRET)._id
+        const _id = jwt.verify(req.cookies.token,process.env.JWT_SECRET)._id
         console.log(_id)
         const user = await User.findById({_id})
         console.log(user._id)
@@ -16,7 +16,7 @@ const auth = async(req,res,next)=>{
         res.clearCookie('token')
         res.removeHeader('token')
         console.log("user not found")
-        res.send({authentication :req.authentication,message:'unsuccessful'})
+        res.send({authentication :req.authentication,message:'unsuccessful',error:e.message})
         // next()
     }
 }
