@@ -57,6 +57,12 @@ userSchema.methods.genAuthToken = async function(){
     const token = jwt.sign({_id : user._id.toString()},process.env.JWT_SECRET)
     return token
 }
+userSchema.methods.toJSON = function() {
+    const userObject = this.toObject()
+    delete userObject.password
+    return userObject
+    
+}
 
 userSchema.statics.findByCresidential = async function(email,password){
     const user = await User.findOne({email})

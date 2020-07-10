@@ -26,7 +26,7 @@ router.post('/admin/login',async(req,res)=>{
         res.send({error:e.message,message:'unsucessful'})
     }
 })
-
+ 
 router.get('/admin/me',adminAuth,(req,res)=>{
     res.send({user: req.user,message:'successful',authentication:req.authentication})
 })
@@ -75,18 +75,18 @@ router.get('/admin/me',adminAuth,(req,res)=>{
 //     const id = await instance.orders.all()
 //       res.send(id)
 // })
-router.post('/admin/signup',async(req,res)=>{
+// router.post('/admin/signup',async(req,res)=>{
 
-    try{
-        console.log(req.body)
-        const admin =  new Admin(req.body)
-        await admin.save()
-        res.send(admin)
-    }catch(e){
-        console.log('error')
-        if(e.message.includes('dup key')) res.send({error: "Email is already registered",message:unsuccessful})
-        res.send(e.message)
-    }
-})
+//     try{
+//         console.log(req.body)
+//         const admin =  new Admin(req.body)
+//         await admin.save()
+//         res.send(admin)
+//     }catch(e){
+//         console.log('error')
+//         if(e.message.includes('dup key')) res.send({error: "Email is already registered",message:unsuccessful})
+//         res.send(e.message)
+//     }
+// })
 
 module.exports = router

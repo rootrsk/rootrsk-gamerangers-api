@@ -8,11 +8,25 @@ const router =  new express.Router()
 const User = require('../models/usersmodel')
 const Matches = require('../models/matchesModel')
 const Participant = require('../models/participantModel')
+const Match = require('../models/matchesModel')
 
 //FOR EVERYONE
 router.get('/matches',async(req,res)=>{
-    const matches =await Matches.find({}).sort({_id : -1}).limit(10)
+    const nowtime = new Date()
+    const matches =await Matches.find({ time:{$gte:nowtime} }).sort({_id : -1}).limit(10)
     res.send(matches)
+})
+router.get('/next-match',async(req,res)=>{
+    const nowtime  = new Date()
+    var match  = await Match.findOne({ $or: [{ match_status: 1 }, {  match_status: 2  }],time:{$gte:nowtime} }).sort({time:1})
+    const matchObject = match.toObject()
+    delete matchObject._id
+    
+    res.send(matchObject) 
+})
+router.get('/live-match',async(req,res)=>{
+    var match  = await Match.findOne({ match_status: 3}).sort({time:-1})
+    res.send(match)
 })
 router.get('/api/matches',async(req,res)=>{
     const matches =await Matches.find({}).sort({_id : -1}).limit(10)
@@ -63,16 +77,16 @@ router.delete('/admin/match/:id',adminAuth,async(req,res)=>{
 
 
 // //Only for upcoming matches  ? registration= Opne && closed ! Finished
-// router.get('/matches/home',async(req,res)=>{
-//     var matches =await Matches.find({ $or: [{ status: 1 }, {  status: 2  }] }).sort({_id : -1}).limit(10)
-//     const match = matches.map(function(x){
-//         const user = x.toObject()
-//         delete user.teams
-//         delete user.__v
-//         return user
-//     })
-//     res.send(match)
-// })
+router.get('/matches/home',async(req,res)=>{
+    var matches =await Matches.find({ $or: [{ status: 1 }, {  status: 2  }] }).sort({_id : -1}).limit(10)
+    const match = matches.map(function(x){
+        const user = x.toObject()
+        delete user.teams
+        delete user.__v
+        return user
+    })
+    res.send(match)
+})
 
 // //FOR ADMIN
 // router.get('/matches/teams/:id',async(req,res)=>{
