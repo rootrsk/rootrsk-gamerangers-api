@@ -27,7 +27,7 @@ app.use(bodyParser.urlencoded({ extended: true}))
 app.use(function (req, res, next) {
 
     // Website you wish to allow to connect
-    const allowedOrigins = ['https://rootrsk.github.io','http://localhost:3000','https://gamerangers.live/'];
+    const allowedOrigins = ['https://rootrsk.github.io','http://localhost:3000','https://gamerangers.live'];
     const origin = req.headers.origin;
     if(allowedOrigins.indexOf(origin) > -1){
          res.setHeader('Access-Control-Allow-Origin', origin);
