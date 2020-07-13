@@ -71,8 +71,7 @@ router.get('/user/me',auth,async(req,res)=>{
 //Update user profile
 router.patch('/user/profile',auth,async(req,res)=>{
     try{
-        // const body = req.body.toObject()
-        console.log(body)
+        
         const user = await User.findByIdAndUpdate({_id:req.user._id},req.body)
         res.send({message:'successful'})
     }catch(e){
