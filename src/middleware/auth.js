@@ -3,8 +3,8 @@ const User = require('../database/models/usersmodel')
 
 const auth = async(req,res,next)=>{
     try{
+        if(!req.cookies.token) throw new Error('You are not logged in or cookie setting is closed')
         const _id = jwt.verify(req.cookies.token,process.env.JWT_SECRET)._id
-        console.log(_id)
         const user = await User.findById({_id})
         console.log(user._id)
         if(!user) throw new Error("No user found")
