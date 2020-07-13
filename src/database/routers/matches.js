@@ -19,19 +19,19 @@ router.get('/matches',async(req,res)=>{
 router.get('/next-match',async(req,res)=>{
     const nowtime  = new Date()
     var match  = await Match.findOne({ $or: [{ match_status: 1 }, {  match_status: 2  }],time:{$gte:nowtime} }).sort({time:1})
-    const matchObject = match.toObject()
-    delete matchObject._id
-    
-    res.send(matchObject) 
+    const publicMatch = match.toObject()
+    delete publicMatch.room_id
+    delete publicMatch.room_password
+    res.send(publicMatch) 
 })
 router.get('/live-match',async(req,res)=>{
     var match  = await Match.findOne({ match_status: 3}).sort({time:-1})
-    res.send(match)
+    const publicMatch = match.toObject()
+    delete publicMatch.room_id
+    delete publicMatch.room_password
+    res.send(publicMatch)
 })
-router.get('/api/matches',async(req,res)=>{
-    const matches =await Matches.find({}).sort({_id : -1}).limit(10)
-    res.send(matches)
-})
+
 router.get('/admin/matches',adminAuth,async(req,res)=>{
     const matches = await Matches.find({}).sort({_id : -1}).limit(15)
     res.send({message:'successful',error:'',matches})
@@ -45,6 +45,30 @@ router.get('/admin/match/:id',adminAuth,async (req,res)=>{
         res.send({error:e.message})
     }
 
+})
+router.post('/user/match-details',userAuth,async(req,res)=>{
+    try{
+        console.log(req.body)
+        const match_id = req.body._id
+        const match = await Match.findById(match_id)
+        if(!match) throw new Error('No Such Match Found')
+        let userMatched = false
+        const teams = match.teams.map(async(team)=>{
+            const singleTeam = await Participant.findById(team.team_id)
+            if(singleTeam.user_id.toString()===req.user._id.toString()) {
+                return userMatched = true
+            } 
+        })
+        await Promise.all(teams)
+        if(userMatched===true){
+            res.send({error:'',match})
+        }else{
+            res.send({error:'You are not registered to this match'})
+        }
+        
+    } catch(e){
+        res.send({error:e.message})
+    }   
 })
 router.patch('/admin/match/:id',adminAuth,async(req,res)=>{
 
